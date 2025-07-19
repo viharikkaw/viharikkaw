@@ -1,35 +1,22 @@
-#chart in python 
-#module matplotlib 
-#pip install matplotlib
-import matplotlib.pyplot as plt
-#Line plot
-plt.plot([1,2,3],[2,4,6])
-plt.title("Line plot chart")
-plt.xlabel("X-axis")
-plt.ylabel("Y-axis")
-plt.grid(True)
-plt.show() 
-
-#bar chart
-label=["A","B","C","D","E"]
-sales=[100,200,500,400,700]
-plt.bar(label,sales,color="blue")
-plt.title("Sales report")
-plt.ylabel("Values of sales")
-plt.xlabel("Brands")
-plt.show()
-
-#pie chart
-label=["A","B","C"]
-sizes=[120,100,150]
-plt.pie(sizes,labels=label,autopct="%1.1f%%",startangle=90)
-plt.title("Product pie report")
-plt.show()
-
-#histogram chart
-ages=[22,43,12,56,30]
-gender=['m','f','m','f','f']
-plt.hist(ages,bins=2,color="green",edgecolor="red")
-plt.xlabel("Gender")
-plt.ylabel("Count")
-plt.show()
+#image to text then translate to regional language
+from transformers import BlipProcessor,BlipForConditionalGeneration
+from PIL import Image
+import requests
+from transformers import MBartForConditionalGeneration,MBart50TokenizerFast 
+processor=BlipProcessor.from_pretrained("salesforce/blip-image-captioning-base")
+model=BlipForConditionalGeneration.from_pretrained("salesforce/blip-image-captioning-base")
+url="https://plus.unsplash.com/premium_photo-1751906599417-05d9577656a2?q=80&w=2075&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+image=Image.open(requests.get(url,stream=True).raw).convert("RGB")
+#create and initialize model and fretch text
+inputs=processor(image,return_tensors="pt")
+output=model.generate(**inputs)
+caption=processor.decode(output[0])
+#Load MBart model 
+model_name="facebook/mbart-large-50-many-to-many-mmt" 
+tokenizer=MBart50TokenizerFast.from_pretrained(model_name) 
+model=MBartForConditionalGeneration.from_pretrained(model_name) 
+tokenizer.scr_lang="en_XX" 
+target_lang="te_IN" 
+inp_lang=tokenizer(caption,return_tensors="pt") 
+out_tok=model1.generate(**inp_lang,forced_bos_token_id=tokenizer.lang_code_to_id[target_lang]) 
+caption_te=tokenizer.decode(out_tok[0]) 
