@@ -1,12 +1,24 @@
-<html>
-    <body>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Household Power Consumption Dashboard</title>
+  <link rel="stylesheet" href="style.css"/>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <div class="container">
+    <h1>⚡ Household Power Consumption Dashboard</h1>
 
-        <script>
-            let a=10;
-            const pi=3.14;
-            alert(a);
-            alert("Thank you");
-            
-        </script>
-    </body>
+    <input type="file" id="csvFile" accept=".csv" />
+    <button onclick="loadCSV()">Upload & Visualize</button>
+
+    <div class="chart-container">
+      <canvas id="powerChart"></canvas>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
 </html>
